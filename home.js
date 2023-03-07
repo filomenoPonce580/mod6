@@ -3,7 +3,6 @@ function arrayTotal(arrayToBeCounted){
   return arrayToBeCounted.length
 }
 
-
 //input: array of book objects
 //output: number, represents the # of book objects in the array
 function getTotalBooksCount(books) {
@@ -11,7 +10,8 @@ function getTotalBooksCount(books) {
 }
 
 
-/*--------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------------------*/
+
 
 //input: array of account objects
 //output: # of account objects in the array
@@ -20,7 +20,8 @@ function getTotalAccountsCount(accounts) {
 }
 
 
-/*--------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------------------*/
+
 
 
 //input: array of book objects
@@ -36,8 +37,8 @@ function getBooksBorrowedCount(books) {
 
 
 
-
 /*--------------------------------------------------------------------------------*/
+
 
 
 
@@ -77,13 +78,66 @@ function getMostCommonGenres(books) {
   return genreArr.splice(0,5)
 }
 
-/*--------------------------------------------------------------------------------*/
+// console.log(getMostCommonGenres(books))
 
 
 
-function getMostPopularBooks(books) {}
 
-function getMostPopularAuthors(books, authors) {}
+/*------------------------------------------------------------------------------------------------*/
+
+
+//input: array of book objects
+//output: returns array of 5 most popular books objects
+        //objects= {name: "title", count: #borrowed}
+        //popularity represented by amount of times book is borrowed
+        //
+function getMostPopularBooks(books) {
+  //access book.title and book.borrows.length
+  let reformattedBooks = books.map((book)=>{
+    return book = {
+      "name": book.title,
+      "count": book.borrows.length
+    }
+  })
+
+  //sort, splice, and return
+  return reformattedBooks.sort((bookA, bookB) => {return bookB.count - bookA.count}).splice(0,5)
+}
+
+console.log(getMostPopularBooks(books))
+
+
+/*------------------------------------------------------------------------------------------------*/
+
+//input: array of book objects, array of author objects
+//output: array containing 5 or fewer objects of most popular authors
+          //popularity: add up all borrows for all books by author
+          //object: {"name": `${firstname} ${lastname}`, "count": #totalBorrows}
+function getMostPopularAuthors(books, authors) {
+  //create function that loops through books and counts borrows for each author
+  function borrowCounter(booksArr, author){
+    let result = 0;
+    books.forEach(book => {
+      if(book.authorId === author.id){
+        return result += book.borrows.length
+      }
+    });
+    return result
+  }
+
+  //reformat authors: add count to authors, combine name properties, remove id
+  let authorsWithCount = authors.map((author) => {
+    return author = {
+      "name": `${author.name.first} ${author.name.last}`,
+      "count": borrowCounter(books, author)
+    }
+  })
+
+  //sort, splice, return
+  return authorsWithCount.sort((authorA, authorB)=>{return authorB.count - authorA.count}).splice(0,5)
+}
+
+
 
 module.exports = {
   getTotalBooksCount,
