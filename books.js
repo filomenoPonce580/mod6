@@ -4,7 +4,7 @@ function findAuthorById(authors, id) {
   return authors.find(authorObj => authorObj.id === id)
 }
 
-
+/************************************************************/
 
 
 //inputs: array of book objects & string ID of single bookObj
@@ -12,6 +12,10 @@ function findAuthorById(authors, id) {
 function findBookById(books, id) {
   return books.find(bookObj => bookObj.id === id)
 }
+
+
+
+/************************************************************/
 
 
 
@@ -40,6 +44,10 @@ function partitionBooksByBorrowedStatus(books) {
 
 
 
+/************************************************************/
+
+
+
 //inputs: book object, array of account objects
 //output: returns array of 10 or fewer account objects
         //accounts are the accounts in 'borrows array'
@@ -53,23 +61,26 @@ function getBorrowersForBook(book, accounts) {
   
   //access borrowers of books. limit to 10 using .filter()
   let last10Borrows = book.borrows.filter((borrowObj, indx)=>{
-    indx < 10
+    return indx < 10
   })
+  console.log(last10Borrows)
+  console.log(last10Borrows.returned)
   
-  //loop through accounts, if id's match, push object into result
-  accounts.forEach((account, indx) => {
-    //for each account, loop through the last10Borrows array
-    for(let i = 0; i < last10Borrows.length; i++){
-      console.log(account[indx])
-      console.log(last10Borrows[i])
-      if(last10Borrows[i].id === account.id){
+  //loop through accounts using .forEach()
+  accounts.forEach(account => {
+    //within each account, loop through last10borrows
+    last10Borrows.forEach(borrower=>{
+      //if id's match
+      if(account.id === borrower.id){
+        //create 'returned' property and set to T/F
+        account.returned = borrower.returned
+        //push account object into result array
         result.push(account)
       }
-    return result
-    }
+      return result
+    })
   })
 
+  //return result
   return result
 }
-
-console.log(getBorrowersForBook(books[1], accounts))
