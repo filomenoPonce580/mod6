@@ -136,14 +136,3 @@ function getMostPopularAuthors(books, authors) {
   //sort, splice, return
   return authorsWithCount.sort((authorA, authorB)=>{return authorB.count - authorA.count}).splice(0,5)
 }
-
-
-
-module.exports = {
-  getTotalBooksCount,
-  getTotalAccountsCount,
-  getBooksBorrowedCount,
-  getMostCommonGenres,
-  getMostPopularBooks,
-  getMostPopularAuthors,
-};
